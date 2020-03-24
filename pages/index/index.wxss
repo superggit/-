@@ -24,6 +24,10 @@ text{
   font-size: 80rpx;
   color: #3C5F81;
 }
+.text1{
+  font-size: 50rpx;
+  color: #3C5F81;
+}
 /* image{
   width: 220rpx;
 } */
