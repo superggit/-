@@ -5,30 +5,50 @@ Page({
    * 页面的初始数据
    */
   data: {
-    region:['北京市','北京市','东城区'],
-    now:''
+    region:'',
+    loc:'',
+    now:'',
+    src:''
   },
 
-  changeRegion:function(e){
+  changeRegion:function(e){   //改变区域
     this.setData({
       region:e.detail.value
     })
-    this.getWeater();   //更新天气
+   // console.log(e);
+    this.getWeather();   
   },
 
-  getWeater:function(){
+  getWeather: function () {   //更新天气
+  var that = this;
+  wx.request({
+    url: 'https://free-api.heweather.net/s6/weather/now?',
+    data: {
+      location: that.data.region[1],
+      key: 'f197f44b37844e0f8052754da1b8006b'
+    },
+    success: function (res) {
+      that.setData({
+        now: res.data.HeWeather6[0].now,
+        src: '/'+'images' +'/' + res.data.HeWeather6[0].now.cond_code.toString()+'.png'
+      })
+    }
+  })
+},
+
+  getaddress:function(){      //更新地址
     var that =this;
     wx.request({
-      url: 'https://free-api.heweather.net/s6/weather/now?',
+      url: 'https://free-api.heweather.net/s6/weather/forecast?',
       data:{
-        location:that.data.region[1],
+        location:that.data.loc,
         key: 'f197f44b37844e0f8052754da1b8006b'
       },
       success:function(res){
-        // console.log(res.data);
         that.setData({
-          now:res.data.HeWeather6[0].now
+          region: [res.data.HeWeather6[0].basic.admin_area+'省', res.data.HeWeather6[0].basic.parent_city+'市', res.data.HeWeather6[0].basic.location+'区']
         })
+        that.getWeather();
       }
     })
   },
@@ -36,6 +56,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this;
+    wx.getLocation({
+      success: function(res) {
+        var loca = res.latitude.toString() + "," + res.longitude.toString();
+        that.data.loc = loca;
+        that.getaddress();
+      },
+    })
 
   },
 

@@ -4,9 +4,10 @@
     <view>{{region}}</view>
   </picker>
   <!-- 2.文本 -->
-  <text>{{now.tmp}}℃ {{now.cond_txt}}</text>
+  <text>{{now.tmp}}℃ </text>
   <!-- 3.图片 -->
-  <image src="/images/{{now.cond_code}}.png"></image>
+  <image src="{{src}}"></image>
+  <text class="text1">{{now.cond_txt}}</text>
   <!-- 4.多行天气信息 -->
   <view class="detail">
     <view class="bar">
